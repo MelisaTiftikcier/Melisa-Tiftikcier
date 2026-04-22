@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Melisa T. — Creative Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --acid: #CAFF00;
+      --coral: #FF4D4D;
+      --violet: #7B2FFF;
+      --sky: #00D4FF;
+      --dark: #0A0A0A;
+      --mid: #141414;
+      --card: #1A1A1A;
+      --text: #F0F0F0;
+      --muted: #666;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CURSOR */
+    .cursor { width: 12px; height: 12px; background: var(--acid); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; mix-blend-mode: difference; }
+    .cursor-ring { width: 40px; height: 40px; border: 1px solid var(--acid); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transition: width 0.2s, height 0.2s; mix-blend-mode: difference; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 48px;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.97) 0%, transparent 100%);
+    }
+    .nav-right { display: flex; align-items: center; gap: 36px; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--acid); }
+
+    /* LANG SWITCHER */
+    .lang-switcher { display: flex; gap: 6px; }
+    .lang-btn {
+      background: none; border: 1px solid #2a2a2a; color: var(--muted);
+      font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 1px;
+      text-transform: uppercase; padding: 5px 10px; cursor: none;
+      transition: all 0.2s;
+    }
+    .lang-btn:hover, .lang-btn.active { border-color: var(--acid); color: var(--acid); }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 48px 80px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 80% 20%, rgba(123,47,255,0.35) 0%, transparent 60%), radial-gradient(ellipse 50% 50% at 10% 80%, rgba(255,77,77,0.25) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 50% 50%, rgba(0,212,255,0.1) 0%, transparent 70%); }
+    .hero-noise { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); opacity: 0.4; }
+    .hero-eyebrow { font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--acid); margin-bottom: 20px; position: relative; display: flex; align-items: center; gap: 12px; }
+    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--acid); }
+    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(72px, 13vw, 180px); line-height: 0.9; letter-spacing: 2px; position: relative; }
+    .hero-title span.grad { background: linear-gradient(135deg, var(--coral) 0%, var(--violet) 50%, var(--sky) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-sub { max-width: 480px; font-size: 16px; line-height: 1.7; color: rgba(240,240,240,0.55); margin-top: 28px; position: relative; }
+    .hero-cta { display: inline-flex; align-items: center; gap: 12px; margin-top: 44px; position: relative; background: var(--acid); color: #000; font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; padding: 16px 32px; transition: transform 0.2s, box-shadow 0.2s; }
+    .hero-cta:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--coral); }
+    .hero-cta svg { transition: transform 0.2s; }
+    .hero-cta:hover svg { transform: translateX(4px); }
+    .hero-scroll { position: absolute; right: 48px; bottom: 80px; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+    .hero-scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--muted), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+    /* MARQUEE */
+    .marquee-wrap { overflow: hidden; border-top: 1px solid #222; border-bottom: 1px solid #222; padding: 14px 0; background: var(--mid); }
+    .marquee-track { display: flex; gap: 48px; width: max-content; animation: marquee 18s linear infinite; }
+    .marquee-track span { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 4px; color: var(--muted); white-space: nowrap; }
+    .marquee-track span.accent { color: var(--acid); }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ABOUT */
+    .about { padding: 120px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-label { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--coral); margin-bottom: 20px; }
+    .about-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: 1px; }
+    .about-title em { font-style: italic; color: var(--sky); font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 0.65em; }
+    .about-body { color: rgba(240,240,240,0.55); line-height: 1.8; margin-top: 24px; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .stat-card { background: var(--card); padding: 36px 28px; position: relative; overflow: hidden; }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
+    .stat-card:nth-child(1)::before { background: var(--acid); }
+    .stat-card:nth-child(2)::before { background: var(--coral); }
+    .stat-card:nth-child(3)::before { background: var(--violet); }
+    .stat-card:nth-child(4)::before { background: var(--sky); }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 1; letter-spacing: 1px; }
+    .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; }
+
+    /* SERVICES */
+    .services { padding: 80px 48px 120px; }
+    .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; border-bottom: 1px solid #1e1e1e; padding-bottom: 24px; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 4vw, 52px); letter-spacing: 2px; }
+    .section-num { font-size: 12px; color: var(--muted); letter-spacing: 2px; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .service-card { background: var(--card); padding: 44px 36px; position: relative; overflow: hidden; transition: background 0.3s; }
+    .service-card:hover { background: #222; }
+    .service-icon { font-size: 36px; margin-bottom: 20px; display: block; transition: transform 0.3s; }
+    .service-card:hover .service-icon { transform: scale(1.2) rotate(-5deg); }
+    .service-name { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; margin-bottom: 12px; }
+    .service-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .service-tag { display: inline-block; margin-top: 20px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 12px; border: 1px solid #333; color: var(--muted); }
+
+    /* WORKS (featured on homepage) */
+    .works { padding: 0 48px 120px; }
+    .works-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+    .work-item { position: relative; overflow: hidden; aspect-ratio: 4/3; background: var(--card); display: flex; align-items: flex-end; }
+    .work-item:nth-child(1) { grid-column: 1 / 8; grid-row: 1; aspect-ratio: 16/9; }
+    .work-item:nth-child(2) { grid-column: 8 / 13; grid-row: 1; }
+    .work-item:nth-child(3) { grid-column: 1 / 5; grid-row: 2; }
+    .work-item:nth-child(4) { grid-column: 5 / 9; grid-row: 2; }
+    .work-item:nth-child(5) { grid-column: 9 / 13; grid-row: 2; }
+    .work-bg { position: absolute; inset: 0; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); background-size: cover; background-position: center; }
+    .work-item:hover .work-bg { transform: scale(1.08); }
+    .work-item:nth-child(1) .work-bg { background: linear-gradient(135deg, #1a0533 0%, #7B2FFF 50%, #FF4D4D 100%); }
+    .work-item:nth-child(2) .work-bg { background: linear-gradient(135deg, #001a1f 0%, #00D4FF 100%); }
+    .work-item:nth-child(3) .work-bg { background: linear-gradient(135deg, #1a0a00 0%, #FF4D4D 100%); }
+    .work-item:nth-child(4) .work-bg { background: linear-gradient(135deg, #001a05 0%, #CAFF00 100%); }
+    .work-item:nth-child(5) .work-bg { background: linear-gradient(135deg, #0a001a 0%, #7B2FFF 100%); }
+    .work-bg::after { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px); }
+    .work-info { position: relative; z-index: 2; padding: 20px 24px; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .work-item:hover .work-info { transform: translateY(0); }
+    .work-cat { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--acid); }
+    .work-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-top: 4px; }
+    .work-number { position: absolute; top: 16px; right: 16px; z-index: 2; font-family: 'Bebas Neue', sans-serif; font-size: 42px; line-height: 1; color: rgba(255,255,255,0.07); }
+
+    /* VIEW ALL WORKS BUTTON */
+    .works-cta-wrap { text-align: center; margin-top: 48px; }
+    .works-cta { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #333; color: var(--text); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; padding: 16px 36px; transition: all 0.3s; }
+    .works-cta:hover { border-color: var(--acid); color: var(--acid); transform: translate(-3px,-3px); box-shadow: 6px 6px 0 rgba(202,255,0,0.15); }
+
+    /* PROCESS */
+    .process { padding: 80px 48px 120px; background: var(--mid); }
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid #222; margin-top: 60px; }
+    .step { padding: 48px 36px; border-right: 1px solid #222; }
+    .step:last-child { border-right: none; }
+    .step-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; background: linear-gradient(135deg, var(--violet), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
+    .step-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 12px; }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* CONTACT */
+    .contact { padding: 120px 48px; text-align: center; position: relative; overflow: hidden; }
+    .contact-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(123,47,255,0.2) 0%, transparent 70%); }
+    .contact-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 9vw, 120px); line-height: 0.9; letter-spacing: 2px; position: relative; }
+    .contact-title span { display: block; background: linear-gradient(90deg, var(--coral), var(--violet), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .contact-sub { color: var(--muted); margin-top: 24px; font-size: 16px; position: relative; }
+    .contact-links { display: flex; justify-content: center; gap: 16px; margin-top: 48px; flex-wrap: wrap; position: relative; }
+    .contact-link { display: inline-block; padding: 14px 28px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: transform 0.2s, box-shadow 0.2s; }
+    .contact-link.primary { background: var(--acid); color: #000; }
+    .contact-link.primary:hover { transform: translate(-3px,-3px); box-shadow: 6px 6px 0 var(--coral); }
+    .contact-link.secondary { border: 1px solid #333; color: var(--text); }
+    .contact-link.secondary:hover { border-color: var(--acid); color: var(--acid); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid #1a1a1a; padding: 28px 48px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .hero, .about, .services, .works, .process, .contact { padding-left: 24px; padding-right: 24px; }
+      .about { grid-template-columns: 1fr; gap: 48px; }
+      .services-grid, .process-steps { grid-template-columns: 1fr; }
+      .works-grid { grid-template-columns: 1fr; }
+      .work-item, .work-item:nth-child(n) { grid-column: auto; grid-row: auto; aspect-ratio: 4/3; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:4px;background:linear-gradient(90deg,var(--acid),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">MELISA T.</div>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#works" data-i18n="nav_works">Works</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="#process" data-i18n="nav_process">Process</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    </ul>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('tr')">TR</button>
+      <button class="lang-btn" onclick="setLang('ru')">RU</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-eyebrow" data-i18n="hero_eyebrow">Graphic Design · Photography · Video</div>
+  <h1 class="hero-title">
+    WHERE<br>
+    <span class="grad" data-i18n="hero_title_line2">PIXELS</span><br>
+    <span data-i18n="hero_title_line3">BLEED SOUL</span>
+  </h1>
+  <p class="hero-sub" data-i18n="hero_sub">
+    I craft visuals that don't just look good — they make people feel something. Design, photography, and video that tell your story with intention.
+  </p>
+  <a href="works.html" class="hero-cta">
+    <span data-i18n="hero_cta">Explore My Work</span>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span data-i18n="hero_scroll">Scroll</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Graphic Design</span><span class="accent">✦</span>
+    <span>Photography</span><span class="accent">✦</span>
+    <span>Video Production</span><span class="accent">✦</span>
+    <span>Brand Identity</span><span class="accent">✦</span>
+    <span>Motion Design</span><span class="accent">✦</span>
+    <span>Social Media</span><span class="accent">✦</span>
+    <span>Graphic Design</span><span class="accent">✦</span>
+    <span>Photography</span><span class="accent">✦</span>
+    <span>Video Production</span><span class="accent">✦</span>
+    <span>Brand Identity</span><span class="accent">✦</span>
+    <span>Motion Design</span><span class="accent">✦</span>
+    <span>Social Media</span><span class="accent">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="reveal">
+    <div class="about-label" data-i18n="about_label">About Me</div>
+    <h2 class="about-title" data-i18n="about_title">Visual<br>language <em>is my</em><br>language.</h2>
+    <p class="about-body" data-i18n="about_body1">
+      As a multi-disciplinary creative specializing in graphic design, photography, and video production, I turn concepts into visuals that resonate. From brand identities to cinematic edits — I bring intention to every frame.
+    </p>
+    <p class="about-body" style="margin-top: 12px;" data-i18n="about_body2">
+      A sharp eye for detail and a relentless pursuit of originality define everything I make.
+    </p>
+  </div>
+  <div class="about-stats reveal">
+    <div class="stat-card">
+      <div class="stat-num">6+</div>
+      <div class="stat-label" data-i18n="stat_years">Years Experience</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">80+</div>
+      <div class="stat-label" data-i18n="stat_projects">Projects Done</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">40+</div>
+      <div class="stat-label" data-i18n="stat_clients">Happy Clients</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3</div>
+      <div class="stat-label" data-i18n="stat_skills">Core Skills</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-header reveal">
+    <h2 class="section-title" data-i18n="services_title">Services</h2>
+    <span class="section-num" data-i18n="services_num">03 Specializations</span>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-icon">🎨</span>
+      <div class="service-name" data-i18n="s1_name">Graphic Design</div>
+      <p class="service-desc" data-i18n="s1_desc">Brand identity, logo design, print materials, social media visuals and digital content design.</p>
+      <span class="service-tag">Branding · Print · Digital</span>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">📷</span>
+      <div class="service-name" data-i18n="s2_name">Photography</div>
+      <p class="service-desc" data-i18n="s2_desc">Product, portrait, architectural and event photography. Professional retouching and color grading included.</p>
+      <span class="service-tag">Product · Portrait · Event</span>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🎬</span>
+      <div class="service-name" data-i18n="s3_name">Video Production</div>
+      <p class="service-desc" data-i18n="s3_desc">Commercials, social media videos, corporate reels and motion graphics design.</p>
+      <span class="service-tag">Commercial · Social · Motion</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED WORKS -->
+<section class="works" id="works">
+  <div class="section-header reveal">
+    <h2 class="section-title" data-i18n="works_title">Signature Shots</h2>
+    <span class="section-num" data-i18n="works_num">Selected Projects</span>
+  </div>
+  <div class="works-grid">
+    <div class="work-item reveal">
+      <div class="work-bg"></div>
+      <div class="work-number">01</div>
+      <div class="work-info">
+        <div class="work-cat">Brand Identity</div>
+        <div class="work-title">Project Name Here</div>
+      </div>
+    </div>
+    <div class="work-item reveal">
+      <div class="work-bg"></div>
+      <div class="work-number">02</div>
+      <div class="work-info">
+        <div class="work-cat">Photography</div>
+        <div class="work-title">Project Name Here</div>
+      </div>
+    </div>
+    <div class="work-item reveal">
+      <div class="work-bg"></div>
+      <div class="work-number">03</div>
+      <div class="work-info">
+        <div class="work-cat">Video</div>
+        <div class="work-title">Project Name Here</div>
+      </div>
+    </div>
+    <div class="work-item reveal">
+      <div class="work-bg"></div>
+      <div class="work-number">04</div>
+      <div class="work-info">
+        <div class="work-cat">Social Media</div>
+        <div class="work-title">Project Name Here</div>
+      </div>
+    </div>
+    <div class="work-item reveal">
+      <div class="work-bg"></div>
+      <div class="work-number">05</div>
+      <div class="work-info">
+        <div class="work-cat">Motion Design</div>
+        <div class="work-title">Project Name Here</div>
+      </div>
+    </div>
+  </div>
+  <div class="works-cta-wrap reveal">
+    <a href="works.html" class="works-cta">
+      <span data-i18n="works_cta">View All Works</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-header reveal">
+    <h2 class="section-title" data-i18n="process_title">My Process</h2>
+    <span class="section-num" data-i18n="process_num">4 Steps</span>
+  </div>
+  <div class="process-steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-title" data-i18n="step1_title">Discovery</div>
+      <p class="step-desc" data-i18n="step1_desc">We define goals, target audience and expectations through a detailed brief.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <div class="step-title" data-i18n="step2_title">Concept</div>
+      <p class="step-desc" data-i18n="step2_desc">Creative concepts are developed and the strongest vision is chosen.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <div class="step-title" data-i18n="step3_title">Production</div>
+      <p class="step-desc" data-i18n="step3_desc">The project comes to life. Feedback rounds refine it to perfection.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">04</div>
+      <div class="step-title" data-i18n="step4_title">Delivery</div>
+      <p class="step-desc" data-i18n="step4_desc">All files are delivered completely. Long-term support is provided.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-bg"></div>
+  <div class="contact-title reveal">
+    LET'S<br>
+    <span data-i18n="contact_title_line2">CREATE</span>
+  </div>
+  <p class="contact-sub reveal" data-i18n="contact_sub">Let's talk about your project. I'll prepare a custom proposal for you.</p>
+  <div class="contact-links reveal">
+    <a href="mailto:m.m.melisatiftikcier@gmail.com" class="contact-link primary" data-i18n="contact_email">Send Email</a>
+    <a href="https://instagram.com/sankicokkolay" target="_blank" class="contact-link secondary">Instagram</a>
+    <a href="https://www.linkedin.com/in/melisa-t-68714b21a" target="_blank" class="contact-link secondary">LinkedIn</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Melisa T. <span data-i18n="footer_rights">All rights reserved.</span></span>
+  <span>Design · Photo · Video</span>
+</footer>
+
+<script>
+// ── TRANSLATIONS ──────────────────────────────────────────
+const i18n = {
+  en: {
+    nav_works: "Works", nav_about: "About", nav_process: "Process", nav_contact: "Contact",
+    hero_eyebrow: "Graphic Design · Photography · Video",
+    hero_title_line2: "PIXELS", hero_title_line3: "BLEED SOUL",
+    hero_sub: "I craft visuals that don't just look good — they make people feel something. Design, photography, and video that tell your story with intention.",
+    hero_cta: "Explore My Work", hero_scroll: "Scroll",
+    about_label: "About Me",
+    about_title: "Visual<br>language <em>is my</em><br>language.",
+    about_body1: "As a multi-disciplinary creative specializing in graphic design, photography, and video production, I turn concepts into visuals that resonate. From brand identities to cinematic edits — I bring intention to every frame.",
+    about_body2: "A sharp eye for detail and a relentless pursuit of originality define everything I make.",
+    stat_years: "Years Experience", stat_projects: "Projects Done", stat_clients: "Happy Clients", stat_skills: "Core Skills",
+    services_title: "Services", services_num: "03 Specializations",
+    s1_name: "Graphic Design", s1_desc: "Brand identity, logo design, print materials, social media visuals and digital content design.",
+    s2_name: "Photography", s2_desc: "Product, portrait, architectural and event photography. Professional retouching and color grading included.",
+    s3_name: "Video Production", s3_desc: "Commercials, social media videos, corporate reels and motion graphics design.",
+    works_title: "Signature Shots", works_num: "Selected Projects", works_cta: "View All Works",
+    process_title: "My Process", process_num: "4 Steps",
+    step1_title: "Discovery", step1_desc: "We define goals, target audience and expectations through a detailed brief.",
+    step2_title: "Concept", step2_desc: "Creative concepts are developed and the strongest vision is chosen.",
+    step3_title: "Production", step3_desc: "The project comes to life. Feedback rounds refine it to perfection.",
+    step4_title: "Delivery", step4_desc: "All files are delivered completely. Long-term support is provided.",
+    contact_title_line2: "CREATE",
+    contact_sub: "Let's talk about your project. I'll prepare a custom proposal for you.",
+    contact_email: "Send Email", footer_rights: "All rights reserved."
+  },
+  tr: {
+    nav_works: "İşler", nav_about: "Hakkımda", nav_process: "Süreç", nav_contact: "İletişim",
+    hero_eyebrow: "Grafik Tasarım · Fotoğrafçılık · Video",
+    hero_title_line2: "PİKSELLER", hero_title_line3: "RUH TAŞIR",
+    hero_sub: "Sadece güzel görünen değil — hissettiren görseller üretiyorum. Tasarım, fotoğraf ve video ile hikâyeni anlatıyorum.",
+    hero_cta: "Çalışmalarımı Gör", hero_scroll: "Kaydır",
+    about_label: "Hakkımda",
+    about_title: "Görsel<br>dil <em>benim</em><br>dilim.",
+    about_body1: "Grafik tasarım, fotoğrafçılık ve video prodüksiyonunda uzmanlaşmış çok yönlü bir yaratıcı olarak, konseptleri yankı uyandıran görsellere dönüştürüyorum.",
+    about_body2: "Detaylara keskin bir bakış ve özgünlük tutkusu, ürettiklerimi tanımlayan en önemli unsurlar.",
+    stat_years: "Yıl Deneyim", stat_projects: "Tamamlanan Proje", stat_clients: "Mutlu Müşteri", stat_skills: "Uzmanlık Alanı",
+    services_title: "Hizmetler", services_num: "03 Uzmanlık Alanı",
+    s1_name: "Grafik Tasarım", s1_desc: "Marka kimliği, logo tasarımı, baskı materyalleri, sosyal medya görselleri ve dijital içerik tasarımı.",
+    s2_name: "Fotoğrafçılık", s2_desc: "Ürün, portre, mimari ve etkinlik fotoğrafçılığı. Profesyonel retouching ve renk düzenleme dahil.",
+    s3_name: "Video Prodüksiyon", s3_desc: "Reklam filmleri, sosyal medya videoları, kurumsal tanıtımlar ve motion grafik tasarımı.",
+    works_title: "Seçki", works_num: "Öne Çıkan Projeler", works_cta: "Tüm Çalışmaları Gör",
+    process_title: "Çalışma Sürecim", process_num: "4 Adım",
+    step1_title: "Keşif", step1_desc: "Projenin hedeflerini, hedef kitlesini ve beklentileri detaylı bir brief ile netleştiriyoruz.",
+    step2_title: "Konsept", step2_desc: "Yaratıcı konseptler geliştirerek en güçlü vizyonu belirliyoruz.",
+    step3_title: "Üretim", step3_desc: "Projeyi hayata geçiriyoruz. Geri bildirimlerle mükemmelleştiriyoruz.",
+    step4_title: "Teslimat", step4_desc: "Tüm dosyalar eksiksiz teslim edilir. Uzun vadeli destek sağlanır.",
+    contact_title_line2: "YARATALIM",
+    contact_sub: "Projenizi konuşalım. Size özel bir teklif hazırlayayım.",
+    contact_email: "E-Posta Gönder", footer_rights: "Tüm hakları saklıdır."
+  },
+  ru: {
+    nav_works: "Работы", nav_about: "Обо мне", nav_process: "Процесс", nav_contact: "Контакт",
+    hero_eyebrow: "Графический Дизайн · Фотография · Видео",
+    hero_title_line2: "ПИКСЕЛИ", hero_title_line3: "НЕСУТ ДУШУ",
+    hero_sub: "Я создаю визуал, который не просто выглядит хорошо — он заставляет чувствовать. Дизайн, фото и видео, которые рассказывают вашу историю.",
+    hero_cta: "Смотреть Работы", hero_scroll: "Листать",
+    about_label: "Обо мне",
+    about_title: "Визуальный<br>язык — <em>это мой</em><br>язык.",
+    about_body1: "Как многопрофильный креативщик, специализирующийся на графическом дизайне, фотографии и видео, я превращаю концепции в визуал, который резонирует.",
+    about_body2: "Острый взгляд на детали и неустанное стремление к оригинальности определяют всё, что я создаю.",
+    stat_years: "Лет Опыта", stat_projects: "Завершённых Проектов", stat_clients: "Довольных Клиентов", stat_skills: "Ключевых Навыка",
+    services_title: "Услуги", services_num: "03 Специализации",
+    s1_name: "Графический Дизайн", s1_desc: "Фирменный стиль, дизайн логотипа, печатные материалы, визуалы для соцсетей и цифровой контент.",
+    s2_name: "Фотография", s2_desc: "Предметная, портретная, архитектурная и ивент-фотография. Профессиональный ретушинг и цветокоррекция.",
+    s3_name: "Видеопроизводство", s3_desc: "Рекламные ролики, видео для соцсетей, корпоративные презентации и моушн-графика.",
+    works_title: "Знаковые Работы", works_num: "Избранные Проекты", works_cta: "Все Работы",
+    process_title: "Мой Процесс", process_num: "4 Шага",
+    step1_title: "Исследование", step1_desc: "Определяем цели, целевую аудиторию и ожидания через подробный бриф.",
+    step2_title: "Концепция", step2_desc: "Разрабатываем творческие концепции и выбираем сильнейшее видение.",
+    step3_title: "Производство", step3_desc: "Проект воплощается в жизнь. Раунды обратной связи доводят его до совершенства.",
+    step4_title: "Сдача", step4_desc: "Все файлы сдаются в полном объёме. Обеспечивается долгосрочная поддержка.",
+    contact_title_line2: "СОЗДАДИМ",
+    contact_sub: "Давайте обсудим ваш проект. Я подготовлю индивидуальное предложение.",
+    contact_email: "Написать Email", footer_rights: "Все права защищены."
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase()));
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key] !== undefined) el.innerHTML = i18n[lang][key];
+  });
+  // hero title top line
+  const titleEl = document.querySelector('.hero-title');
+  if (titleEl) {
+    const lines = { en: ['WHERE', 'PIXELS', 'BLEED SOUL'], tr: ['NEREDE', 'PİKSELLER', 'RUH TAŞIR'], ru: ['ГДЕ', 'ПИКСЕЛИ', 'НЕСУТ ДУШУ'] };
+    const l = lines[lang];
+    titleEl.innerHTML = `${l[0]}<br><span class="grad" data-i18n="hero_title_line2">${l[1]}</span><br><span data-i18n="hero_title_line3">${l[2]}</span>`;
+  }
+}
+
+// ── CURSOR ──────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
+  cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+  ring.style.transform = `translate(${rx - 20}px, ${ry - 20}px)`;
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+document.querySelectorAll('a, button, .work-item, .service-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.width = '64px'; ring.style.height = '64px'; });
+  el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; });
+});
+
+// ── SCROLL REVEAL ───────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
