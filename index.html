@@ -205,11 +205,11 @@
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-noise"></div>
-  <div class="hero-eyebrow" data-i18n="hero_eyebrow">Graphic Design · Photography · Video</div>
+  <div class="hero-eyebrow" data-i18n="hero_eyebrow">Graphic Design · Video Editing </div>
   <h1 class="hero-title">
-    WHERE<br>
-    <span class="grad" data-i18n="hero_title_line2">PIXELS</span><br>
-    <span data-i18n="hero_title_line3">BLEED SOUL</span>
+    EVERY FRAME<br>
+    <span class="grad" data-i18n="hero_title_line2">LEAVES</span><br>
+    <span data-i18n="hero_title_line3">A MARK</span>
   </h1>
   <p class="hero-sub" data-i18n="hero_sub">
     I craft visuals that don't just look good — they make people feel something. Design, photography, and video that tell your story with intention.
@@ -410,7 +410,7 @@
 <!-- FOOTER -->
 <footer>
   <span>© 2026 Melisa T. <span data-i18n="footer_rights">All rights reserved.</span></span>
-  <span>Design · Photo · Video</span>
+  <span>Design · Video Editing </span>
 </footer>
 
 <script>
@@ -418,8 +418,8 @@
 const i18n = {
   en: {
     nav_works: "Works", nav_about: "About", nav_process: "Process", nav_contact: "Contact",
-    hero_eyebrow: "Graphic Design · Photography · Video",
-    hero_title_line2: "PIXELS", hero_title_line3: "BLEED SOUL",
+    hero_eyebrow: "Graphic Design · Video Editing",
+    hero_title_line2: "LEAVES", hero_title_line3: "A MARK",
     hero_sub: "I craft visuals that don't just look good — they make people feel something. Design, photography, and video that tell your story with intention.",
     hero_cta: "Explore My Work", hero_scroll: "Scroll",
     about_label: "About Me",
@@ -505,7 +505,7 @@ function setLang(lang) {
   // hero title top line
   const titleEl = document.querySelector('.hero-title');
   if (titleEl) {
-    const lines = { en: ['WHERE', 'PIXELS', 'BLEED SOUL'], tr: ['NEREDE', 'PİKSELLER', 'RUH TAŞIR'], ru: ['ГДЕ', 'ПИКСЕЛИ', 'НЕСУТ ДУШУ'] };
+    const lines = { en: ['EVERY FRAME', 'LEAVES', 'A MARK'], tr: ['HER', 'KARE', 'BİR İZ'], ru: ['КАЖДЫЙ', 'КАДР', 'ОСТАВЛЯЕТ СЛЕД'] };
     const l = lines[lang];
     titleEl.innerHTML = `${l[0]}<br><span class="grad" data-i18n="hero_title_line2">${l[1]}</span><br><span data-i18n="hero_title_line3">${l[2]}</span>`;
   }
